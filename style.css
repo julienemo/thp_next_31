@@ -1,109 +1,121 @@
-table {
-	border-collapse: collapse;
+html,
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.carre {
-	width: 150px;
-	height: 150px;
+table {
+  border-collapse: collapse;
+}
+
+.cell {
+  width: 150px;
+  height: 150px;
 }
 
 #titre {
-	left: 0px;
-	top: 0px;
-	text-align: center;
-	width: 100%;
-	display: block;
-	font-family: 'Lobster', cursive;
-	font-size: 80px;
-	padding-top: 20px;
-	color: black;
+  left: 0px;
+  top: 0px;
+  text-align: center;
+  width: 100%;
+  display: block;
+  font-family: "Lobster", cursive;
+  font-size: 80px;
+  padding-top: 20px;
+  color: black;
 }
 
 #win {
-	text-align: center;
-	font-family: 'Lobster', cursive;
-	font-size: 50px;
-	padding-top: 15px;
-	color: black;
+  text-align: center;
+  font-family: "Lobster", cursive;
+  font-size: 50px;
+  padding-top: 15px;
+  color: black;
 }
 
 #A1 {
-	border-right: solid 10px black;
-	border-bottom: solid 10px black;
+  border-right: solid 10px black;
+  border-bottom: solid 10px black;
 }
 
 #A2 {
-	border-right: solid 10px black;
-	border-bottom: solid 10px black;
-	border-left: solid 10px black;
-	background-position: center; /* ligne à supprimer */
+  border-right: solid 10px black;
+  border-bottom: solid 10px black;
+  border-left: solid 10px black;
+  background-position: center; /* ligne à supprimer */
 }
 
 #A3 {
-	border-bottom: solid 10px black;
-	border-left: solid 10px black;
-	background-position: right; /* ligne à supprimer */
+  border-bottom: solid 10px black;
+  border-left: solid 10px black;
+  background-position: right; /* ligne à supprimer */
 }
 
 #B1 {
-	border-right: solid 10px black;
-	border-bottom: solid 10px black;
-	border-top: solid 10px black;
+  border-right: solid 10px black;
+  border-bottom: solid 10px black;
+  border-top: solid 10px black;
 }
 
 #B2 {
-	border: solid 10px black;
-
+  border: solid 10px black;
 }
 
 #B3 {
-	border-left: solid 10px black;
-	border-bottom: solid 10px black;
-	border-top: solid 10px black;
+  border-left: solid 10px black;
+  border-bottom: solid 10px black;
+  border-top: solid 10px black;
 }
 
 #C1 {
-	border-right: solid 10px black;
-	border-top: solid 10px black;
+  border-right: solid 10px black;
+  border-top: solid 10px black;
 }
 
 #C2 {
-	border-right: solid 10px black;
-	border-left: solid 10px black;
-	border-top: solid 10px black;
-
+  border-right: solid 10px black;
+  border-left: solid 10px black;
+  border-top: solid 10px black;
 }
 
 #C3 {
-	border-left: solid 10px black;
-	border-top: solid 10px black;
+  border-left: solid 10px black;
+  border-top: solid 10px black;
 }
 
 .jeu {
-	margin-top: 50px;
-	text-align: center;
+  margin-top: 50px;
+  text-align: center;
 }
 
 #center {
-	margin-left: auto;
-	margin-right: auto;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-#rejouer {
-	position: fixed;
-	left: 0px;
-	bottom: 0px;
-	text-align: center;
-	width: 100%;
-	display: block;
+.btn {
+  margin: 2rem;
+  padding: 1rem 2rem;
+  font-family: "Lobster", cursive;
+  font-size: 80px;
+  background-color: #c3c2c2;
+  border-radius: 20px;
+  border: none;
 }
 
-.bouton {
-	margin-bottom: 20px;
-	padding: 20px;
-	font-family: 'Lobster', cursive;
-	font-size: 80px;
-	background-color: #C3C2C2;
-	border-radius: 20px;
-	border: none;
+.btn:hover {
+  cursor: pointer;
+  color: #c3c2c2;
+  background-color: black;
+}
+
+#levels {
+  text-align: center;
+  margin-top: 3rem;
+}
+
+#levels p {
+  font-size: 4rem;
 }
