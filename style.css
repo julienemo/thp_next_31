@@ -10,7 +10,7 @@ table {
   border-collapse: collapse;
 }
 
-.carre {
+.cell {
   width: 150px;
   height: 150px;
 }
@@ -95,7 +95,7 @@ table {
   margin-right: auto;
 }
 
-.bouton {
+.btn {
   margin: 2rem;
   padding: 1rem 2rem;
   font-family: "Lobster", cursive;
@@ -105,7 +105,7 @@ table {
   border: none;
 }
 
-.bouton:hover {
+.btn:hover {
   cursor: pointer;
   color: #c3c2c2;
   background-color: black;

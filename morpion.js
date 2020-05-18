@@ -7,7 +7,7 @@ class Morpion {
     for (let i = 0; i < 3; i++) {
       this.map[i] = [];
       for (let j = 0; j < 3; j++) {
-        this.map[i][j] = "EMPTY";
+        this.map[i][j] = EMPTY;
         document.getElementById(this.getZone(i, j)).onclick = () =>
           this.playerTurn(i, j);
       }
@@ -25,7 +25,7 @@ class Morpion {
   checkDraw = () => {
     for (let x = 0; x < 3; x++) {
       for (let y = 0; y < 3; y++) {
-        if (this.map[x][y] === "EMPTY") return false;
+        if (this.map[x][y] === EMPTY) return false;
       }
     }
     return true;
@@ -35,7 +35,7 @@ class Morpion {
     const image = player == this.player ? "croix" : "rond";
     const zone = this.getZone(x, y);
 
-    if (this.map[x][y] != "EMPTY") return false;
+    if (this.map[x][y] != EMPTY) return false;
     this.map[x][y] = player;
     document.getElementById(
       zone
@@ -56,14 +56,14 @@ class Morpion {
     const eight = this.map[2][1];
     const nine = this.map[2][2];
     if (
-      (one === two && one === three && one != "EMPTY") ||
-      (four === five && four === six && four != "EMPTY") ||
-      (seven === eight && seven === nine && seven != "EMPTY") ||
-      (one === five && one === nine && one != "EMPTY") ||
-      (three === five && three === seven && three != "EMPTY") ||
-      (one === four && one === seven && one != "EMPTY") ||
-      (two === five && two === eight && two != "EMPTY") ||
-      (three === six && three === nine && three != "EMPTY")
+      (one === two && one === three && one != EMPTY) ||
+      (four === five && four === six && four != EMPTY) ||
+      (seven === eight && seven === nine && seven != EMPTY) ||
+      (one === five && one === nine && one != EMPTY) ||
+      (three === five && three === seven && three != EMPTY) ||
+      (one === four && one === seven && one != EMPTY) ||
+      (two === five && two === eight && two != EMPTY) ||
+      (three === six && three === nine && three != EMPTY)
     ) {
       this.finish = true;
       if (player == this.ia) {
@@ -78,7 +78,7 @@ class Morpion {
   };
 
   winningLine(a, b, c) {
-    return a == b && b == c && a != "EMPTY";
+    return a == b && b == c && a != EMPTY;
   }
 
   checkWinner() {
@@ -108,35 +108,26 @@ class Morpion {
     let case1 =
       this.map[a[0]][a[1]] === this.map[b[0]][b[1]] &&
       this.map[b[0]][b[1]] === this.player &&
-      this.map[c[0]][c[1]] === "EMPTY";
+      this.map[c[0]][c[1]] === EMPTY;
     let case2 =
-      this.map[a[0]][a[1]] === this.map[c[0]][c[1]] &&
-      this.map[c[0]][c[1]] === this.player &&
-      this.map[b[0]][b[1]] === "EMPTY";
-    let case3 =
       this.map[b[0]][b[1]] === this.map[c[0]][c[1]] &&
       this.map[c[0]][c[1]] === this.player &&
-      this.map[a[0]][a[1]] === "EMPTY";
+      this.map[a[0]][a[1]] === EMPTY;
     if (case1) {
       return c;
     }
     if (case2) {
-      return b;
-    }
-    if (case3) {
       return a;
     } else {
-      return false;
+      return null;
     }
   };
 
   playerTurn = (x, y) => {
-    console.log("in player turn");
     if (this.finish) return;
     if (!this.fillGrid(x, y, this.player))
       return alert("This case is already occupied");
     else if (!this.finish) {
-      console.log("triggering ai turn");
       this.iaTurn();
     }
   };
@@ -151,11 +142,11 @@ class Morpion {
       let bestScore = -Infinity;
       for (let i = 0; i < 3; i++) {
         for (let j = 0; j < 3; j++) {
-          if (board[i][j] == "EMPTY") {
+          if (board[i][j] == EMPTY) {
             board[i][j] = this.ia;
             this.turn++;
             let score = this.minimax(board, depth + 1, false);
-            board[i][j] = "EMPTY";
+            board[i][j] = EMPTY;
             this.turn--;
             if (score > bestScore) {
               bestScore = score;
@@ -168,11 +159,11 @@ class Morpion {
       let bestScore = Infinity;
       for (let i = 0; i < 3; i++) {
         for (let j = 0; j < 3; j++) {
-          if (board[i][j] == "EMPTY") {
+          if (board[i][j] == EMPTY) {
             board[i][j] = this.player;
             this.turn++;
             let score = this.minimax(board, depth + 1, true);
-            board[i][j] = "EMPTY";
+            board[i][j] = EMPTY;
             this.turn--;
             if (score < bestScore) {
               bestScore = score;
@@ -189,14 +180,14 @@ class Morpion {
     let emptyCases = [];
     for (let i = 0; i < 3; i++) {
       for (let j = 0; j < 3; j++) {
-        if (this.map[i][j] == "EMPTY") {
+        if (this.map[i][j] == EMPTY) {
           emptyCases.push({ x: i, y: j });
         }
       }
     }
 
     const randomlyPlay = () => {
-      let randomPosition = Math.floor(Math.random() * emptyCases.length);
+      let randomPosition = generateRandomZeroUpTo(emptyCases.length);
       let randomMove = emptyCases[randomPosition];
       return (move = {
         i: randomMove.x,
@@ -216,7 +207,7 @@ class Morpion {
         this.map[emptyCase.x][emptyCase.y] = this.ia;
         this.turn++;
         let score = this.minimax(this.map, depth + 1, false);
-        this.map[emptyCase.x][emptyCase.y] = "EMPTY";
+        this.map[emptyCase.x][emptyCase.y] = EMPTY;
         this.turn--;
         if (score > bestScore) {
           bestScore = score;
@@ -227,63 +218,24 @@ class Morpion {
 
     if (this.level === "Medium") {
       let possibleCuttingMoves = [];
-      let stepsToCheck = [
-        // one direction
-        [
-          [0, 0],
-          [0, 1],
-          [0, 2],
-        ],
-        [
-          [1, 0],
-          [1, 1],
-          [1, 2],
-        ],
-        [
-          [2, 0],
-          [2, 1],
-          [2, 2],
-        ],
-        // another direction
-        [
-          [0, 0],
-          [1, 0],
-          [2, 0],
-        ],
-        [
-          [0, 1],
-          [1, 1],
-          [2, 1],
-        ],
-        [
-          [0, 2],
-          [1, 2],
-          [2, 2],
-        ],
-        // diagonal
-        [
-          [0, 0],
-          [1, 1],
-          [2, 2],
-        ],
-        [
-          [0, 2],
-          [1, 1],
-          [2, 0],
-        ],
-      ];
-      stepsToCheck.forEach((line) => {
-        if (this.checkTwo(line[0], line[1], line[2])) {
-          console.log(this.checkTwo(line[0], line[1], line[2]));
-          possibleCuttingMoves.push(this.checkTwo(line[0], line[1], line[2]));
+      for (let i = 0; i < 3; i++) {
+        if (this.checkTwo([i, 0], [i, 1], [i, 2])) {
+          possibleCuttingMoves.push(this.checkTwo([i, 0], [i, 1], [i, 2]));
         }
-      });
-      console.log(possibleCuttingMoves.length);
+        if (this.checkTwo([0, i], [1, i], [2, i])) {
+          possibleCuttingMoves.push(this.checkTwo([0, i], [1, i], [2, i]));
+        }
+      }
+      if (this.checkTwo([0, 0], [1, 1], [2, 2])) {
+        possibleCuttingMoves.push(this.checkTwo([0, 0], [1, 1], [2, 2]));
+      }
+      if (this.checkTwo([2, 0], [1, 1], [0, 2])) {
+        possibleCuttingMoves.push(this.checkTwo([2, 0], [1, 1], [0, 2]));
+      }
       if (possibleCuttingMoves.length > 0) {
-        let randomPosition = Math.floor(
-          Math.random() * possibleCuttingMoves.length
+        let randomPosition = generateRandomZeroUpTo(
+          possibleCuttingMoves.length
         );
-        console.log(randomPosition);
         let randomMove = possibleCuttingMoves[randomPosition];
         move = {
           i: randomMove[0],
@@ -293,8 +245,6 @@ class Morpion {
         move = randomlyPlay();
       }
     }
-
-    console.log(move);
     this.fillGrid(move.i, move.j, this.ia);
   };
 }

@@ -1,37 +1,29 @@
-const EASY = "Easy";
-const MEDIUM = "Medium";
-const HARD = "Hard";
-
 document.getElementById("levels").innerHTML = `
   <p>Choose a level</p>
-  <button type="button" title="You will start the game" class="bouton">${EASY}</button>
-  <button type="button" title="You will start the game" class="bouton">${MEDIUM}</button>
-  <button type="button" title="AI will start the game" class="bouton">${HARD}</button>
+  <button type="button" title="You will start the game" class="btn">${EASY}</button>
+  <button type="button" title="You will start the game" class="btn">${MEDIUM}</button>
+  <button type="button" title="AI will start the game" class="btn">${HARD}</button>
 `;
 
 const chooseLevel = (e) => {
   const level = e.target.innerText;
-  console.log(e.target.innerText);
   if (level === EASY) {
-    console.log("easy");
-    var morpion = new Morpion("J1", "Easy");
+    var morpion = new Morpion("J1", EASY);
   }
   if (level === MEDIUM) {
-    console.log("medium");
-    var morpion = new Morpion("J1", "Medium");
+    var morpion = new Morpion("J1", MEDIUM);
   }
   if (level === HARD) {
-    console.log("medium");
-    var morpion = new Morpion("J2", "Hard");
+    var morpion = new Morpion("J2", HARD);
   }
   document.getElementById("levels").innerHTML = "";
-  document.getElementById("rejouer").innerHTML = `
-  <button type="button" class="bouton" onclick="location.reload();">
+  document.getElementById("reset").innerHTML = `
+  <button type="button" class="btn" onclick="location.reload();">
     Reset
   </button>
 `;
 };
 
-document.querySelectorAll(".bouton").forEach((btn) => {
+document.querySelectorAll(".btn").forEach((btn) => {
   btn.onclick = (e) => chooseLevel(e);
 });
