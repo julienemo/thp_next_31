@@ -1,20 +1,98 @@
 class Morpion {
-  constructor(player, level) {
+  constructor(player, level, board) {
     this.player = player;
     this.level = level;
-    this.ia = player == "J1" ? "J2" : "J1";
+    this.ia = player === "J1" ? "J2" : "J1";
     this.map = [];
+    this.lastStep = {
+      J1: [],
+      J2: [],
+    };
+    this.finish = false;
+    this.existingBoard = board;
+
+    // initial board and fill whatever exists already
     for (let i = 0; i < 3; i++) {
       this.map[i] = [];
       for (let j = 0; j < 3; j++) {
-        this.map[i][j] = EMPTY;
+        if (this.existingBoard && this.existingBoard[i][j] !== EMPTY) {
+          this.map[i][j] = this.existingBoard[i][j];
+          this.occupyGraphically(i, j, this.map[i][j]);
+        } else {
+          this.map[i][j] = EMPTY;
+        }
         document.getElementById(this.getZone(i, j)).onclick = () =>
           this.playerTurn(i, j);
       }
     }
-    this.finish = false;
-    if (this.ia === "J1") this.iaTurn();
+
+    // attribute first step right
+    if (this.level === HARD && this.existingBoard) {
+      this.playerTurn();
+    } else if (this.ia === "J1") this.iaTurn();
   }
+
+  remember = (board) => {
+    window.localStorage.setItem(
+      APPNAME,
+      JSON.stringify({
+        player: this.player,
+        level: this.level,
+        board: board,
+      })
+    );
+  };
+
+  showUndoRedo = () => {
+    let undo_redo_zone = document.getElementById("undo_redo");
+    if (undo_redo_zone.innerHTML === "") {
+      undo_redo_zone.innerHTML = `
+          <button type="button" id="undoBtn" title="Undo your and rival's last move" class="btn">Undo</button>
+          <button type="button" id="redoBtn" title="Redo your last move, rival may of may no remain previous choice" class="btn">Redo</button>
+        `;
+      document.getElementById("undoBtn").addEventListener("click", () => {
+        this.undo(this.lastStep.J1);
+        this.undo(this.lastStep.J2);
+        let currentBoard = [];
+        for (let i = 0; i < 3; i++) {
+          currentBoard[i] = [];
+          for (let j = 0; j < 3; j++) {
+            currentBoard[i][j] = this.map[i][j];
+          }
+        }
+        this.remember(currentBoard);
+      });
+
+      document.getElementById("redoBtn").addEventListener("click", () => {
+        this.redo();
+      });
+    }
+  };
+
+  occupyGraphically = (x, y, player) => {
+    const image = player == this.player ? "croix" : "rond";
+    const zone = this.getZone(x, y);
+    document.getElementById(
+      zone
+    ).style.backgroundImage = `url(image-morpion/${image}.png)`;
+    document.getElementById(zone).className += " filled";
+  };
+
+  undo = (array) => {
+    let x = array[0];
+    let y = array[1];
+    this.map[x][y] = EMPTY;
+    const zone = this.getZone(x, y);
+    document.getElementById(zone).style.backgroundImage = `none`;
+    document.getElementById(zone).classList.remove("filled");
+  };
+
+  redo = () => {
+    let x = this.lastStep[this.player][0];
+    let y = this.lastStep[this.player][1];
+    this.fillGrid(x, y, this.player);
+    this.iaTurn();
+  };
 
   getZone = (x, y) => {
     if (y == 0) return "A" + (x + 1);
@@ -32,16 +110,28 @@ class Morpion {
   };
 
   fillGrid = (x, y, player) => {
-    const image = player == this.player ? "croix" : "rond";
-    const zone = this.getZone(x, y);
-
     if (this.map[x][y] != EMPTY) return false;
     this.map[x][y] = player;
-    document.getElementById(
-      zone
-    ).style.backgroundImage = `url(image-morpion/${image}.png)`;
-    document.getElementById(zone).className += " filled";
+    this.lastStep[player] = [x, y];
+
+    this.occupyGraphically(x, y, player);
+
+    let currentBoard = [];
+    for (let i = 0; i < 3; i++) {
+      currentBoard[i] = [];
+      for (let j = 0; j < 3; j++) {
+        currentBoard[i][j] = this.map[i][j];
+      }
+    }
+
+    this.remember(currentBoard);
     this.checking(player);
+
+    if (player === this.player && !this.finish) {
+      this.showUndoRedo();
+    } else if (this.finish) {
+      document.getElementById("undo_redo").innerHTML = "";
+    }
     return true;
   };
 
@@ -73,8 +163,8 @@ class Morpion {
       }
     } else if (this.checkDraw()) {
       document.getElementById("win").textContent = "Vous êtes à égalité";
-      this.finish = true;
     }
+    return this.finish;
   };
 
   winningLine(a, b, c) {
