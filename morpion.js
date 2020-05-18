@@ -14,6 +14,10 @@ class Morpion {
     }
     this.finish = false;
     if (this.ia === "J1") this.iaTurn();
+    this.lastStep = {
+      AI: [],
+      player: [],
+    };
   }
 
   getZone = (x, y) => {
@@ -41,7 +45,16 @@ class Morpion {
       zone
     ).style.backgroundImage = `url(image-morpion/${image}.png)`;
     document.getElementById(zone).className += " filled";
-    this.checking(player);
+    console.log(this.checking(player));
+    if (player === this.player && !this.checking(player)) {
+      let undo_redo_zone = document.getElementById("undo_redo");
+      if (undo_redo_zone.innerHTML === "") {
+        undo_redo_zone.innerHTML = `
+          <button type="button" id="undo" title="Undo your and rival's last move" class="btn">Undo</button>
+          <button type="button" id="redo" title="Redo your last move, rival may of may no remain previous choice" class="btn">Redo</button>
+        `;
+      }
+    }
     return true;
   };
 
@@ -73,8 +86,8 @@ class Morpion {
       }
     } else if (this.checkDraw()) {
       document.getElementById("win").textContent = "Vous êtes à égalité";
-      this.finish = true;
     }
+    return this.finish;
   };
 
   winningLine(a, b, c) {
