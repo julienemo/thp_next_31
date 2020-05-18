@@ -96,8 +96,8 @@ table {
 }
 
 .bouton {
-  margin-bottom: 20px;
-  padding: 20px;
+  margin: 2rem;
+  padding: 1rem 2rem;
   font-family: "Lobster", cursive;
   font-size: 80px;
   background-color: #c3c2c2;
@@ -105,7 +105,17 @@ table {
   border: none;
 }
 
+.bouton:hover {
+  cursor: pointer;
+  color: #c3c2c2;
+  background-color: black;
+}
+
 #levels {
   text-align: center;
   margin-top: 3rem;
+}
+
+#levels p {
+  font-size: 4rem;
 }

@@ -4,9 +4,9 @@ const HARD = "Hard";
 
 document.getElementById("levels").innerHTML = `
   <p>Choose a level</p>
-  <button type="button" class="bouton">${EASY}</button>
-  <button type="button" class="bouton">${MEDIUM}</button>
-  <button type="button" class="bouton">${HARD}</button>
+  <button type="button" title="You will start the game" class="bouton">${EASY}</button>
+  <button type="button" title="You will start the game" class="bouton">${MEDIUM}</button>
+  <button type="button" title="AI will start the game" class="bouton">${HARD}</button>
 `;
 
 const chooseLevel = (e) => {
@@ -14,20 +14,20 @@ const chooseLevel = (e) => {
   console.log(e.target.innerText);
   if (level === EASY) {
     console.log("easy");
-    var morpion = new Morpion("J1", "easy");
+    var morpion = new Morpion("J1", "Easy");
   }
   if (level === MEDIUM) {
     console.log("medium");
-    var morpion = new Morpion("J1", "medium");
+    var morpion = new Morpion("J1", "Medium");
   }
   if (level === HARD) {
     console.log("medium");
-    var morpion = new Morpion("J2", "hard");
+    var morpion = new Morpion("J2", "Hard");
   }
   document.getElementById("levels").innerHTML = "";
   document.getElementById("rejouer").innerHTML = `
   <button type="button" class="bouton" onclick="location.reload();">
-    Rejouer
+    Reset
   </button>
 `;
 };
